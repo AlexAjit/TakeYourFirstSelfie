@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Camra</title>
-    <style>
+<head>	
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera</title>
+<script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+<style>
         *{
     margin: 0;
     padding: 0;
@@ -60,7 +60,15 @@ body{
 }
 
 
-.camera{
+/* .camera{
+    width: 500px;
+    height: 400px;
+    position: relative;
+    border: 5px solid white;
+    border-radius: 5px;
+} */
+
+#camera{
     width: 500px;
     height: 400px;
     position: relative;
@@ -68,19 +76,19 @@ body{
     border-radius: 5px;
 }
 
-.video{
-    width: 100%;
-    height: 100%;
+#webCam{
+    width: 40%;
+    height: 70%;
     object-fit: cover;
 }
 
 .cam-buttton{
     width: 80px;
-    font-size: 2rem;
+    font-size: 2em;
     font-weight: bold;
     padding: 0.5rem;
-    border-radius:10px;
-    position: absolute;
+    border-radius:50%;
+    position: relative;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%) translateY(-20px);
@@ -96,20 +104,20 @@ body{
     transition: all 200ms linear;
 }
 
-
-.effect{
-    opacity: 0.9;
-    transition: all 100ms ease;
+#canvas{
+    display: none;
 }
 
-.canvas{
-    display: none;
+#webCam{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .name{
     color: white;
 }
-    </style>
+    </style> -->
 </head>
 <body>
     <div class="name">
@@ -158,44 +166,29 @@ body{
             <span style="--i:13"></span>
             <span style="--i:28"></span>
         </div>
-    </div>
-
-    <div class="camera effect">
-        <video src="" class="video"></video>
-        <div class="cam-buttton">
+    </div> 
+    <div class="camera">
+    <div class="cam-buttton">
+        <a download onClick="takeAPicture()">
             <h5>click me!</h5>
-        </div>
+            </a>
     </div>
-    <canvas class="canvas" width="500" height="400"></canvas>
-
-    <script>
-        const video = document.querySelector(".video")
-const cameraButton = document.querySelector(".camera")
-const canvas = document.querySelector(".canvas")
-
-navigator.mediaDevices.getUserMedia({video: true})
-.then(stream => {
-    video.srcObject = stream;
-    video.play();
-
-})
-
-cameraButton.addEventListener("click", () => {
-    video.classList.toggle("effect")
-    setTimeout(() => video.classList.toggle("effect"), 400);
-    canvas.getContext("2d").drawImage(video, 0, 0, canvas.clientWidth, canvas.height)
-    let image_data_url = canvas.toDataURL("/image/jpg")
-
-
-    const downloadLink = document.createElement("a")
-    downloadLink.href = image_data_url
-    downloadLink.download = "selfie.jpg"
-    document.body.appendChild(downloadLink)
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-})
-    </script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</div>
+    <div id="camera">
+<video id="webCam" autoplay playsinlne width="500" height="400">
+</video></div>
+<canvas id="canvas"></canvas>
+    
+<script>
+const webCamElement = document.getElementById("webCam");
+const canvasElement = document.getElementById("canvas"); 
+const webcam = new Webcam(webCamElement, "user", canvasElement);
+webcam.start();
+function takeAPicture() 
+{
+let picture = webcam.snap();
+document.querySelector("a").href = picture;
+}
+</script>
 </body>
 </html>
