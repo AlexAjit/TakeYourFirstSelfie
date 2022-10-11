@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome Camra</title>
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    background: #0c192c;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container{
+    position: relative;
+    width: 100%;
+    
+    
+}
+
+.bubble{
+    position: relative;
+    display: flex;
+}
+
+.bubble span{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background: #4fc3dc;
+    margin: 0 4px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 10px #4fc3dc44, 0 0 50px #4fc3dc, 0 0 100px #4fc3dc;
+    animation: animate 15s linear infinite;
+    animation-duration: calc(125s / var(--i));
+}
+
+.bubble span:nth-child(even){
+    background: #ff2d75;
+    box-shadow: 0 0 0 10px #ff2d7544, 0 0 50px #ff2d75, 0 0 100px #ff2d75;;
+}
+
+@keyframes animate {
+    0%{
+        transform: translateY(100vh) scale(0);
+    }
+    100%{
+        transform: translateY(-10vh) scale(1);
+    }
+}
+
+
+.camera{
+    width: 500px;
+    height: 400px;
+    position: relative;
+    border: 5px solid white;
+    border-radius: 5px;
+}
+
+.video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cam-buttton{
+    width: 80px;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    border-radius:10px;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(-20px);
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    text-align: center;
+}
+
+.cam-buttton:hover{
+    background: white;
+    color: #222;
+    transition: all 200ms linear;
+}
+
+
+.effect{
+    opacity: 0.9;
+    transition: all 100ms ease;
+}
+
+.canvas{
+    display: none;
+}
+
+.name{
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <div class="name">
+        <h1 id="#name">Take Your Selfie</h1>
+    </div>
+    <div class="container">
+        <div class="bubble">
+            <span style="--i:11"></span>
+            <span style="--i:12"></span>
+            <span style="--i:24"></span>
+            <span style="--i:10"></span>
+            <span style="--i:14"></span>
+            <span style="--i:23"></span>
+            <span style="--i:18"></span>
+            <span style="--i:16"></span>
+            <span style="--i:19"></span>
+            <span style="--i:20"></span>
+            <span style="--i:22"></span>
+            <span style="--i:25"></span>
+            <span style="--i:18"></span>
+            <span style="--i:21"></span>
+            <span style="--i:15"></span>
+            <span style="--i:13"></span>
+            <span style="--i:26"></span>
+            <span style="--i:17"></span>
+            <span style="--i:13"></span>
+            <span style="--i:28"></span>
+            <span style="--i:11"></span>
+            <span style="--i:12"></span>
+            <span style="--i:24"></span>
+            <span style="--i:10"></span>
+            <span style="--i:14"></span>
+            <span style="--i:23"></span>
+            <span style="--i:18"></span>
+            <span style="--i:16"></span>
+            <span style="--i:19"></span>
+            <span style="--i:20"></span>
+            <span style="--i:22"></span>
+            <span style="--i:25"></span>
+            <span style="--i:18"></span>
+            <span style="--i:21"></span>
+            <span style="--i:15"></span>
+            <span style="--i:13"></span>
+            <span style="--i:26"></span>
+            <span style="--i:17"></span>
+            <span style="--i:13"></span>
+            <span style="--i:28"></span>
+        </div>
+    </div>
+
+    <div class="camera effect">
+        <video src="" class="video"></video>
+        <div class="cam-buttton">
+            <h5>click me!</h5>
+        </div>
+    </div>
+    <canvas class="canvas" width="500" height="400"></canvas>
+
+    <script>
+        const video = document.querySelector(".video")
+const cameraButton = document.querySelector(".camera")
+const canvas = document.querySelector(".canvas")
+
+navigator.mediaDevices.getUserMedia({video: true})
+.then(stream => {
+    video.srcObject = stream;
+    video.play();
+
+})
+
+cameraButton.addEventListener("click", () => {
+    video.classList.toggle("effect")
+    setTimeout(() => video.classList.toggle("effect"), 400);
+    canvas.getContext("2d").drawImage(video, 0, 0, canvas.clientWidth, canvas.height)
+    let image_data_url = canvas.toDataURL("image/jpeg")
+
+
+    const downloadLink = document.createElement("a")
+    downloadLink.href = image_data_url
+    downloadLink.download = "selfie.jpeg"
+    document.body.appendChild(downloadLink)
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+})
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
