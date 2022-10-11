@@ -1,2 +1,2 @@
 # TakeYourFirstSelfie
-this is a my-camera.
+this is my-camera.
